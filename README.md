@@ -21,7 +21,7 @@ A modern e-commerce application built with Next.js 14, Redux Toolkit, TypeScript
 - TypeScript
 - Redux Toolkit
 - Tailwind CSS
-- DummyJSON API
+- DummyJSON API - https://dummyjson.com/products
 
 ## Getting Started
 
@@ -107,17 +107,6 @@ src/
 - Proper loading states and error handling
 - Responsive images and layouts
 
-## Future Improvements
-
-- User authentication
-- Wishlist functionality
-- Order management
-- Payment integration
-- Product reviews and ratings
-- Advanced filtering options
-- Performance monitoring
-- Unit tests and E2E testing
-- CI/CD pipeline
 
 ## Contributing
 
@@ -130,3 +119,10 @@ src/
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+
+## Vercel Link
+
+[https://ecommerce-app-pied-seven.vercel.app/](https://ecommerce-app-pied-seven.vercel.app/)
+
+
