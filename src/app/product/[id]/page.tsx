@@ -4,13 +4,8 @@ import { ProductDetail } from "@/components/ProductDetail";
 import { getProduct } from "@/services/api";
 import { notFound } from "next/navigation";
 
-interface ProductPageProps {
-  params: {
-    id: string;
-  };
-}
 
-export default async function ProductPage({ params }: ProductPageProps) {
+export default async function ProductPage({ params }: { params: { id: string } }) {
   const id = Number(params.id);
   const product = await getProduct(id).catch(() => null);
 
