@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { Product } from "@/types/product";
 import { addToCart } from "@/store/cartSlice";
+import { SimilarProducts } from "./SimilarProducts";
 
 interface ProductDetailProps {
   product: Product;
@@ -30,6 +31,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 alt={product.title}
                 fill
                 className="h-full w-full object-cover object-center"
+                priority
               />
             </div>
             <div className="mt-4 grid grid-cols-4 gap-4">
@@ -128,6 +130,12 @@ export function ProductDetail({ product }: ProductDetailProps) {
             </div>
           </div>
         </div>
+
+        {/* Similar Products */}
+        <SimilarProducts
+          category={product.category}
+          currentProductId={product.id}
+        />
       </div>
     </div>
   );
