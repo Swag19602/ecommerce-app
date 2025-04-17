@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 import { Product } from "@/types/product";
 import { addToCart } from "@/store/cartSlice";
 import { SimilarProducts } from "./SimilarProducts";
+import Link from "next/link";
+import { X } from "lucide-react";
 
 interface ProductDetailProps {
   product: Product;
@@ -21,6 +23,11 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
   return (
     <div className="bg-white">
+      <div className="absolute top-30 right-20 z-10 cursor-pointer hover:text-gray-900">
+        <Link href="/" aria-label="close" >
+            <X className="h-5 w-5 text-gray-600" />
+        </Link>
+      </div>
       <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
         <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
           {/* Image gallery */}
