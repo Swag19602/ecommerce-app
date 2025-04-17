@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { useDebounce } from "@/hooks/useDebounce";
 import { searchProducts } from "@/services/api";
 import { cn } from "@/utils/cn";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 export function Header() {
   const router = useRouter();
@@ -14,6 +16,11 @@ export function Header() {
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const debouncedSearch = useDebounce(searchQuery, 300);
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const totalItems = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
 
   const handleSearch = async (query: string) => {
     if (!query.trim()) {
@@ -102,7 +109,7 @@ export function Header() {
 
           <Link
             href="/cart"
-            className="flex items-center text-gray-700 hover:text-gray-900"
+            className="flex items-center text-gray-700 hover:text-gray-900 relative p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
           >
             <svg
               className="h-6 w-6"
@@ -115,6 +122,11 @@ export function Header() {
             >
               <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
+            {totalItems > 0 && (
+              <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-sm transform scale-100 hover:scale-110 transition-transform duration-200">
+                {totalItems}
+              </span>
+            )}
           </Link>
         </div>
       </div>
