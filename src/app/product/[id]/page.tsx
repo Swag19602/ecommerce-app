@@ -5,7 +5,8 @@ import { getProduct } from "@/services/api";
 import { notFound } from "next/navigation";
 
 
-export default async function ProductPage({ params }: { params: { id: string } }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default async function ProductPage({ params }: any) {
   const id = Number(params.id);
   const product = await getProduct(id).catch(() => null);
 

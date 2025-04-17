@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { searchProducts } from "@/services/api";
 import { Product } from "@/types/product";
@@ -9,6 +9,16 @@ import Image from "next/image";
 import { Header } from "@/components/Header";
 
 export default function SearchPage() {
+  
+  
+  return (
+    <Suspense fallback={<div>Loading search parameters...</div>}>
+      <SearchWithParams />
+    </Suspense>
+  );
+}
+
+function SearchWithParams() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const query = searchParams.get("q") || "";
@@ -40,7 +50,6 @@ export default function SearchPage() {
 
     fetchResults();
   }, [query]);
-
 
   return (
     <div className="min-h-screen bg-gray-50">

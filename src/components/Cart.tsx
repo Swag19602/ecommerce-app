@@ -3,7 +3,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import Image from "next/image";
 import Link from "next/link";
-import { CartItem, removeFromCart, updateQuantity } from "@/store/cartSlice";
+import { removeFromCart, updateQuantity } from "@/store/cartSlice";
 import { RootState } from "@/store/store";
 
 export function Cart() {
