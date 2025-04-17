@@ -3,13 +3,16 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ProductCard } from "./ProductCard";
-import { getProducts } from "@/services/api";
+import { getProducts, getCategories } from "@/services/api";
 import { Product } from "@/types/product";
+import { Category } from "@/types/category"; // Assuming you've created this type
 
 export function ProductList() {
   const router = useRouter();
   const searchParams = useSearchParams();
+
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [totalPages, setTotalPages] = useState(1);
@@ -18,6 +21,21 @@ export function ProductList() {
   const category = searchParams.get("category") || "";
   const sortBy = searchParams.get("sort") || "";
 
+  // Fetch categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const cats = await getCategories();
+        setCategories(cats);
+      } catch (err) {
+        console.error("Failed to fetch categories", err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  // Fetch products based on category, sort, and page
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
@@ -36,12 +54,14 @@ export function ProductList() {
     fetchProducts();
   }, [page, category, sortBy]);
 
+  // Handle sort change
   const handleSortChange = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("sort", value);
     router.push(`/?${params.toString()}`);
   };
 
+  // Handle category change
   const handleCategoryChange = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     if (value) {
@@ -53,47 +73,29 @@ export function ProductList() {
     router.push(`/?${params.toString()}`);
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div className="text-red-500">{error}</div>;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div className="text-red-500">{error}</div>;
 
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
         <div className="flex gap-4">
           <select
+            title="Category"
             value={category}
             onChange={(e) => handleCategoryChange(e.target.value)}
             className="rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="">All Categories</option>
-            <option value="smartphones">Smartphones</option>
-            <option value="laptops">Laptops</option>
-            <option value="fragrances">Fragrances</option>
-            <option value="skincare">Skincare</option>
-            <option value="groceries">Groceries</option>
-            <option value="home-decoration">Home Decoration</option>
-            <option value="furniture">Furniture</option>
-            <option value="tops">Tops</option>
-            <option value="womens-dresses">Women's Dresses</option>
-            <option value="womens-shoes">Women's Shoes</option>
-            <option value="mens-shirts">Men's Shirts</option>
-            <option value="mens-shoes">Men's Shoes</option>
-            <option value="mens-watches">Men's Watches</option>
-            <option value="womens-watches">Women's Watches</option>
-            <option value="womens-bags">Women's Bags</option>
-            <option value="womens-jewellery">Women's Jewellery</option>
-            <option value="sunglasses">Sunglasses</option>
-            <option value="automotive">Automotive</option>
-            <option value="motorcycle">Motorcycle</option>
-            <option value="lighting">Lighting</option>
+            {categories.map((cat) => (
+              <option key={cat.slug} value={cat.slug}>
+                {cat.name}
+              </option>
+            ))}
           </select>
 
           <select
+            title="Sort By"
             value={sortBy}
             onChange={(e) => handleSortChange(e.target.value)}
             className="rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:outline-none focus:ring-blue-500 focus:border-blue-500"

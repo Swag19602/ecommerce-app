@@ -1,3 +1,4 @@
+import { Category } from "@/types/category";
 import { ProductsResponse, Product } from "@/types/product";
 
 const BASE_URL = "https://dummyjson.com/products";
@@ -11,8 +12,10 @@ export async function getProducts(
   let url = `${BASE_URL}?limit=${limit}&skip=${(page - 1) * limit}`;
 
   if (category) {
-    url += `&category=${category}`;
+    // Correctly append the category filter
+    url = `${BASE_URL}/category/${category}?limit=${limit}&skip=${(page - 1) * limit}`;
   }
+
 
   const response = await fetch(url);
   if (!response.ok) {
@@ -51,6 +54,28 @@ export async function searchProducts(query: string): Promise<ProductsResponse> {
   const response = await fetch(`${BASE_URL}/search?q=${query}`);
   if (!response.ok) {
     throw new Error("Failed to search products");
+  }
+  return response.json();
+}
+
+export async function getCategories(): Promise<Category[]> {
+  const response = await fetch(`${BASE_URL}/categories`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch categories");
+  }
+  return response.json();
+}
+
+
+export async function getProductsByCategory(
+  category: string,
+  page: number = 1,
+  limit: number = 12
+): Promise<ProductsResponse> {
+  const url = `${BASE_URL}/category/${category}?limit=${limit}&skip=${(page - 1) * limit}`;
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error("Failed to fetch category products");
   }
   return response.json();
 }
