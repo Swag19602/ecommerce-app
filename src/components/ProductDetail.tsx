@@ -37,6 +37,8 @@ export function ProductDetail({ product }: ProductDetailProps) {
             <div className="mt-4 grid grid-cols-4 gap-4">
               {product.images.map((image, index) => (
                 <button
+                  type="button"
+                  title={`${product.title} - ${index + 1}`}
                   key={index}
                   onClick={() => setSelectedImage(image)}
                   className={`relative h-24 w-24 overflow-hidden rounded-lg ${
@@ -47,6 +49,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                     src={image}
                     alt={`${product.title} - ${index + 1}`}
                     fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
                     className="h-full w-full object-cover object-center"
                   />
                 </button>

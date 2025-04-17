@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { Header } from "@/components/Header";
 import { ProductDetail } from "@/components/ProductDetail";
 import { getProduct } from "@/services/api";
+import { notFound } from "next/navigation";
 
 interface ProductPageProps {
   params: {
@@ -10,7 +11,10 @@ interface ProductPageProps {
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const product = await getProduct(parseInt(params.id));
+  const id = Number(params.id);
+  const product = await getProduct(id).catch(() => null);
+
+  if (!product) return notFound();
 
   return (
     <main>
